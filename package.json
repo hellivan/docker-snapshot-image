@@ -1,7 +1,7 @@
 {
   "name": "docker-snapshot-image",
   "description": "A module for crating a docker snapshot image of a node project",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "main": "./lib/index.js",
   "license": "MIT",
   "scripts": {
