@@ -8,13 +8,15 @@ program.version(pkg.version)
     .option('--no-auto', 'Do not create the image with the snapshot-tag')
     .option('-f --fixed-tag <name>', 'Tag the image with the specified tag')
     .option('--image-name <name>', 'Use the specified custom name for the image')
+    .option('-t --test', 'Start application in test mode (only log docker commands on stdout)')
     .parse(process.argv);
 
 
 const options = {
 	imageName: program.imageName,
 	fixedTag: program.fixedTag,
-	autoTag: program.auto
+	autoTag: program.auto,
+	testMode: program.test
 };
 
 
