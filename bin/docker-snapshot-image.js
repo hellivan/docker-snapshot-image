@@ -5,7 +5,7 @@ const pkg = require('../package.json');
 const {createImage} = require('../lib');
 
 program.version(pkg.version)
-    .option('--no-auto', 'Do not create the image with the snapshot-tag')
+    .option('--no-auto', 'Do not create the image with the automatic snapshot-tag ({pkg-version}-{commit-hash})')
     .option('-f --fixed-tag <name>', 'Tag the image with the specified tag')
     .option('--image-name <name>', 'Use the specified custom name for the image')
     .option('-t --test', 'Start application in test mode (only log docker commands on stdout)')
