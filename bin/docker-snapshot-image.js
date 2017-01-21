@@ -9,6 +9,7 @@ program.version(pkg.version)
     .option('-f --fixed-tag <name>', 'Tag the image with the specified tag')
     .option('--image-name <name>', 'Use the specified custom name for the image')
     .option('-t --test', 'Start application in test mode (only log docker commands on stdout)')
+    .option('--silent-docker', 'Do not output stdout/stderr from executed docker commands')
     .parse(process.argv);
 
 
@@ -16,7 +17,8 @@ const options = {
 	imageName: program.imageName,
 	fixedTag: program.fixedTag,
 	autoTag: program.auto,
-	testMode: program.test
+	testMode: program.test,
+	silentDockerMode: program.silentDocker
 };
 
 
