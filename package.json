@@ -1,7 +1,7 @@
 {
   "name": "docker-snapshot-image",
   "description": "A module for creating a docker snapshot image of a node project",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/hellivan/docker-snapshot-image.git"
