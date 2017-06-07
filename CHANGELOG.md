@@ -1,3 +1,13 @@
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/hellivan/docker-snapshot-image/compare/v1.0.0...v1.0.1) (2017-06-07)
+
+
+### Bug Fixes
+
+* **ImageName:** sanitize docker image name ([c0a640c](https://github.com/hellivan/docker-snapshot-image/commit/c0a640c))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/hellivan/docker-snapshot-image/compare/v0.0.2...v1.0.0) (2017-01-21)
 
