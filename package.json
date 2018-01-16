@@ -1,14 +1,14 @@
 {
   "name": "docker-snapshot-image",
   "description": "A module for creating a docker snapshot image of a node project",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/hellivan/docker-snapshot-image.git"
   },
   "main": "./dist/lib/index.js",
   "license": "MIT",
-    "scripts": {
+  "scripts": {
     "build": "rimraf ./dist && tsc",
     "flow:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "version": "npm run flow:changelog && git add CHANGELOG.md"
