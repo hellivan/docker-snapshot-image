@@ -43,7 +43,7 @@ function getPackageInfo() {
         });
 }
 
-function createImage(tag, testMode, silentDockerMode) {
+function _createImage(tag, testMode, silentDockerMode) {
     const command = 'docker';
     const args = ['build', '--force-rm', '-t', tag, './'];
     return Promise.resolve()
@@ -62,7 +62,7 @@ function tagImage(existingTag, newTag, testMode, silentDockerMode) {
 }
 
 function createOrTag(existingTag, newTag, testMode, silentDockerMode) {
-    if(!existingTag) return createImage(newTag, testMode, silentDockerMode);
+    if(!existingTag) return _createImage(newTag, testMode, silentDockerMode);
     return tagImage(existingTag, newTag, testMode, silentDockerMode);
 }
 
@@ -70,7 +70,7 @@ function sanitizeImageName(imageName) {
     return imageName.replace(/\//g, '-').replace(/\W/g, '');
 }
 
-module.exports.createImage = function({imageName, fixedTag, autoTag, testMode, silentDockerMode}) {
+export function createImage({imageName, fixedTag, autoTag, testMode, silentDockerMode}) {
     return Promise.all([
             getCommitHash(),
             getPackageInfo()
@@ -78,7 +78,8 @@ module.exports.createImage = function({imageName, fixedTag, autoTag, testMode, s
         .then(([commitHash, info]) => {
             let p = Promise.resolve();
 
-            imageName = sanitizeImageName(imageName || info.name);
+            // imageName = sanitizeImageName(imageName || info.name);
+	    imageName = imageName || info.name;
             let defaultTag = `${info.version}-${commitHash}`;
 
             if(autoTag) {
