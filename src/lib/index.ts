@@ -78,7 +78,8 @@ export function createImage({imageName, fixedTag, autoTag, testMode, silentDocke
         .then(([commitHash, info]) => {
             let p = Promise.resolve();
 
-            imageName = sanitizeImageName(imageName || info.name);
+            // imageName = sanitizeImageName(imageName || info.name);
+	    imageName = imageName || info.name;
             let defaultTag = `${info.version}-${commitHash}`;
 
             if(autoTag) {
