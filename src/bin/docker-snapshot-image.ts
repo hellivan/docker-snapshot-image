@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const pkg = require('../package.json');
+const pkg = require('../../package.json');
 const {createImage} = require('../lib');
 
 program.version(pkg.version)
