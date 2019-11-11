@@ -29,6 +29,10 @@ function spawnCmd(command: string, args: string[], silent: boolean): Promise<voi
     });
 }
 
+function getBranchName(): Promise<string> {
+    return execCmd('git rev-parse --abbrev-ref HEAD');
+}
+
 function getCommitHash(): Promise<string> {
     return execCmd('git rev-parse --short HEAD');
 }
@@ -80,12 +84,22 @@ function createOrTag(
 //     return imageName.replace(/\//g, '-').replace(/\W/g, '');
 // }
 
+/**
+ * Replace / with - and whitespaces with underscores
+ *
+ * @param tagName
+ */
+function sanitizeTagName(tagName: string): string {
+    return tagName.replace(/\//g, '-').replace(/\W/g, '_');
+}
+
 export interface CreateImageOptions {
     imageName: string;
     fixedTag: string;
     autoTag: boolean;
     testMode: boolean;
     silentDockerMode: boolean;
+    autoTagFormat: string;
 }
 
 export async function createImage({
@@ -93,19 +107,25 @@ export async function createImage({
     fixedTag,
     autoTag,
     testMode,
-    silentDockerMode
+    silentDockerMode,
+    autoTagFormat
 }: CreateImageOptions): Promise<string | null> {
-    const [commitHash, info] = await Promise.all([getCommitHash(), getPackageInfo()]);
+    const [commitHash, info, branchName] = await Promise.all([getCommitHash(), getPackageInfo(), getBranchName()]);
 
     // imageName = sanitizeImageName(imageName || info.name);
     imageName = imageName || info.name;
 
-    const defaultTag = `${info.version}-${commitHash}`;
+    const defaultTag = autoTagFormat
+        .replace('{pkg-version}', info.version)
+        .replace('{commit-hash}', commitHash)
+        .replace('{branch-name}', branchName);
+
+    const sanitizedDefaultTag = sanitizeTagName(defaultTag);
 
     let dockerImage: string | null = null;
 
     if (autoTag) {
-        dockerImage = await createOrTag(dockerImage, `${imageName}:${defaultTag}`, testMode, silentDockerMode);
+        dockerImage = await createOrTag(dockerImage, `${imageName}:${sanitizedDefaultTag}`, testMode, silentDockerMode);
     }
 
     if (fixedTag) {

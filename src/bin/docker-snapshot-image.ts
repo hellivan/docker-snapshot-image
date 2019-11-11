@@ -11,7 +11,12 @@ async function main(): Promise<void> {
 
     program
         .version(pkg.version)
-        .option('--no-auto', 'Do not create the image with the automatic snapshot-tag ({pkg-version}-{commit-hash})')
+        .option('--no-auto', 'Do not create the image with the automatic snapshot-tag useing auto-tag-format')
+        .option(
+            '--auto-tag-format <format>',
+            'Available options are {branch-name}, {pkg-version} and {commit-hash}',
+            '{pkg-version}-{commit-hash}'
+        )
         .option('-f --fixed-tag <name>', 'Additionally tag the image with the specified tag')
         .option('--image-name <name>', 'Use the specified custom name for the image')
         .option('-t --test', 'Start application in test mode (only log docker commands on stdout)')
@@ -23,7 +28,8 @@ async function main(): Promise<void> {
         fixedTag: program.fixedTag,
         autoTag: program.auto,
         testMode: program.test,
-        silentDockerMode: program.silentDocker
+        silentDockerMode: program.silentDocker,
+        autoTagFormat: program.autoTagFormat
     };
 
     await createImage(options);
