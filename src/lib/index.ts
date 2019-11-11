@@ -1,26 +1,26 @@
-const {existsSync} = require('fs');
-const {exec, spawn} = require('child_process');
-const {resolve} = require('path');
+import { exec, spawn } from 'child_process';
+import { existsSync } from 'fs';
+import { resolve } from 'path';
 
-
-function execCmd(cmd) {
-    return new Promise((resolve, reject) => {
+function execCmd(cmd: string): Promise<string> {
+    return new Promise<string>((resolve, reject) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         exec(cmd, (err, stdout, stderr) => {
-            if(err) return reject(err);
+            if (err) return reject(err);
             resolve(stdout.trim());
         });
     });
 }
 
-function spawnCmd(command, args, silent) {
-    return new Promise((resolve, reject) => {
+function spawnCmd(command: string, args: string[], silent: boolean): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
         const cmd = spawn(command, args);
-        cmd.stdout.on('data', (data) => !silent && process.stdout.write(`${data}`));
-        cmd.stderr.on('data', (data) => !silent && process.stderr.write(`${data}`));
+        cmd.stdout.on('data', data => !silent && process.stdout.write(`${data}`));
+        cmd.stderr.on('data', data => !silent && process.stderr.write(`${data}`));
 
-        cmd.on('error', (err) => reject(err));
-        cmd.on('close', (code) => {
-            if(code !== 0) {
+        cmd.on('error', err => reject(err));
+        cmd.on('close', code => {
+            if (code !== 0) {
                 const errMsg = `Command '${command} ${args.join(' ')}' exited with status code ${code}'`;
                 return reject(new Error(errMsg));
             }
@@ -29,71 +29,108 @@ function spawnCmd(command, args, silent) {
     });
 }
 
-function getCommitHash() {
+function getBranchName(): Promise<string> {
+    return execCmd('git rev-parse --abbrev-ref HEAD');
+}
+
+function getCommitHash(): Promise<string> {
     return execCmd('git rev-parse --short HEAD');
 }
 
-function getPackageInfo() {
+async function getPackageInfo(): Promise<{ name: string; version: string }> {
     const pkgPath = resolve('./package.json');
 
-    return Promise.resolve()
-        .then(() => {
-            if(!existsSync(pkgPath)) throw new Error('package.json not not found in cwd!');
-            return require(pkgPath);
-        });
+    if (!existsSync(pkgPath)) throw new Error('package.json not not found in cwd!');
+    // TODO: replace require call
+    return require(pkgPath);
 }
 
-function _createImage(tag, testMode, silentDockerMode) {
+async function createDockerImage(tag: string, testMode: boolean, silentDockerMode: boolean): Promise<string> {
     const command = 'docker';
     const args = ['build', '--force-rm', '-t', tag, './'];
-    return Promise.resolve()
-        .then(() => console.log(`Creating image using command '${command} ${args.join(' ')}'`))
-        .then(() => !testMode && spawnCmd(command, args, silentDockerMode))
-        .then(() => tag);
+    console.log(`Creating image using command '${command} ${args.join(' ')}'`);
+    if (!testMode) {
+        await spawnCmd(command, args, silentDockerMode);
+    }
+    return tag;
 }
 
-function tagImage(existingTag, newTag, testMode, silentDockerMode) {
+async function tagImage(
+    existingTag: string,
+    newTag: string,
+    testMode: boolean,
+    silentDockerMode: boolean
+): Promise<string> {
     const command = 'docker';
     const args = ['tag', existingTag, newTag];
-    return Promise.resolve()
-        .then(() => console.log(`Tagging image using command '${command} ${args.join(' ')}'`))
-        .then(() => !testMode && spawnCmd(command, args, silentDockerMode))
-        .then(() => existingTag);
+    console.log(`Tagging image using command '${command} ${args.join(' ')}'`);
+    if (!testMode) {
+        await spawnCmd(command, args, silentDockerMode);
+    }
+    return existingTag;
 }
 
-function createOrTag(existingTag, newTag, testMode, silentDockerMode) {
-    if(!existingTag) return _createImage(newTag, testMode, silentDockerMode);
+function createOrTag(
+    existingTag: string | null,
+    newTag: string,
+    testMode: boolean,
+    silentDockerMode: boolean
+): Promise<string> {
+    if (!existingTag) return createDockerImage(newTag, testMode, silentDockerMode);
     return tagImage(existingTag, newTag, testMode, silentDockerMode);
 }
 
-function sanitizeImageName(imageName) {
-    return imageName.replace(/\//g, '-').replace(/\W/g, '');
+// function sanitizeImageName(imageName: string): string {
+//     return imageName.replace(/\//g, '-').replace(/\W/g, '');
+// }
+
+/**
+ * Replace / with - and whitespaces with underscores
+ *
+ * @param tagName
+ */
+function sanitizeTagName(tagName: string): string {
+    return tagName.replace(/\//g, '-').replace(/\W/g, '_');
 }
 
-export function createImage({imageName, fixedTag, autoTag, testMode, silentDockerMode}) {
-    return Promise.all([
-            getCommitHash(),
-            getPackageInfo()
-        ])
-        .then(([commitHash, info]) => {
-            let p = Promise.resolve();
+export interface CreateImageOptions {
+    imageName: string;
+    fixedTag: string;
+    autoTag: boolean;
+    testMode: boolean;
+    silentDockerMode: boolean;
+    autoTagFormat: string;
+}
 
-            // imageName = sanitizeImageName(imageName || info.name);
-	    imageName = imageName || info.name;
-            let defaultTag = `${info.version}-${commitHash}`;
+export async function createImage({
+    imageName,
+    fixedTag,
+    autoTag,
+    testMode,
+    silentDockerMode,
+    autoTagFormat
+}: CreateImageOptions): Promise<string | null> {
+    const [commitHash, info, branchName] = await Promise.all([getCommitHash(), getPackageInfo(), getBranchName()]);
 
-            if(autoTag) {
-                p = p.then((dockerImage) =>
-                    createOrTag(dockerImage, `${imageName}:${defaultTag}`, testMode, silentDockerMode)
-                );
-            }
+    // imageName = sanitizeImageName(imageName || info.name);
+    imageName = imageName || info.name;
 
-            if(fixedTag) {
-                p = p.then((dockerImage) =>
-                    createOrTag(dockerImage, `${imageName}:${fixedTag}`, testMode, silentDockerMode)
-                );
-            }
+    const defaultTag = autoTagFormat
+        .replace('{pkg-version}', info.version)
+        .replace('{commit-hash}', commitHash)
+        .replace('{branch-name}', branchName);
 
-            return p;
-        });
-};
+    const sanitizedDefaultTag = sanitizeTagName(defaultTag);
+
+    let dockerImage: string | null = null;
+
+    if (autoTag) {
+        dockerImage = await createOrTag(dockerImage, `${imageName}:${sanitizedDefaultTag}`, testMode, silentDockerMode);
+    }
+
+    if (fixedTag) {
+        dockerImage = await createOrTag(dockerImage, `${imageName}:${fixedTag}`, testMode, silentDockerMode);
+    }
+
+    return dockerImage;
+}
