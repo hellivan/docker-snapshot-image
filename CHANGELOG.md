@@ -1,3 +1,22 @@
+# [2.0.0](https://github.com/hellivan/docker-snapshot-image/compare/v1.0.3...v2.0.0) (2019-11-11)
+
+
+### Code Refactoring
+
+* rewrite to typescript strict mode ([69e7100](https://github.com/hellivan/docker-snapshot-image/commit/69e7100331be5a70f712847429bf8f28faf85be8))
+
+
+### Features
+
+* customizable auto-tagging-format ([b29ec2d](https://github.com/hellivan/docker-snapshot-image/commit/b29ec2df72cdf104e822bf0c63571734cbdc8e2d))
+
+
+### BREAKING CHANGES
+
+* minimal supported node-version is now 10.3.0
+
+
+
 <a name="1.0.3"></a>
 ## [1.0.3](https://github.com/hellivan/docker-snapshot-image/compare/v1.0.2...v1.0.3) (2018-01-16)
 
