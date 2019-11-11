@@ -1,28 +1,40 @@
 {
-  "name": "docker-snapshot-image",
-  "description": "A module for creating a docker snapshot image of a node project",
-  "version": "1.0.3",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/hellivan/docker-snapshot-image.git"
-  },
-  "main": "./dist/lib/index.js",
-  "license": "MIT",
-  "scripts": {
-    "build": "rimraf ./dist && tsc",
-    "flow:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-    "version": "npm run flow:changelog && git add CHANGELOG.md"
-  },
-  "dependencies": {
-    "@types/node": "^9.3.0",
-    "commander": "^2.9.0"
-  },
-  "bin": {
-    "docker-snapshot-image": "./dist/bin/docker-snapshot-image.js"
-  },
-  "devDependencies": {
-    "conventional-changelog-cli": "^1.2.0",
-    "rimraf": "^2.6.2",
-    "typescript": "^2.6.2"
-  }
+    "name": "docker-snapshot-image",
+    "description": "A module for creating a docker snapshot image of a node project",
+    "version": "1.0.3",
+    "engines": {
+        "node": ">=10.3.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hellivan/docker-snapshot-image.git"
+    },
+    "main": "./dist/lib/index.js",
+    "license": "MIT",
+    "scripts": {
+        "build": "rimraf ./dist && tsc",
+        "flow:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
+        "version": "npm run flow:changelog && git add CHANGELOG.md",
+        "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+        "check-formatting": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
+        "lint": "eslint ./src --ext .ts"
+    },
+    "dependencies": {
+        "@types/node": "^10.3.0",
+        "commander": "^4.0.1"
+    },
+    "bin": {
+        "docker-snapshot-image": "./dist/bin/docker-snapshot-image.js"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^2.6.1",
+        "@typescript-eslint/parser": "^2.6.1",
+        "conventional-changelog-cli": "^2.0.27",
+        "eslint": "^6.6.0",
+        "eslint-config-prettier": "^6.5.0",
+        "eslint-plugin-prettier": "^3.1.1",
+        "prettier": "^1.19.1",
+        "rimraf": "^3.0.0",
+        "typescript": "^3.7.2"
+    }
 }

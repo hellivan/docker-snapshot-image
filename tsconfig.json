@@ -1,14 +1,12 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "removeComments": true,
-    "sourceMap": true,
-    "outDir": "dist",
-    "declaration": true,
-      "lib": ["ES5", "ES2015"]
-  },
-  "files": [
-    "src/lib/index.ts",
-    "src/bin/docker-snapshot-image.ts"
-  ]
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2017",
+        "removeComments": true,
+        "sourceMap": true,
+        "outDir": "dist",
+        "declaration": true,
+        "strict": true
+    },
+    "files": ["src/lib/index.ts", "src/bin/docker-snapshot-image.ts"]
 }
