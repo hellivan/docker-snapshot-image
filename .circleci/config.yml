@@ -24,7 +24,7 @@ jobs:
       - attach_workspace:
           at: ~/
       - run:
-          command: yarn lint
+          command: yarn build
       - persist_to_workspace:
           root: ~/
           paths:
