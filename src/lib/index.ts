@@ -91,8 +91,8 @@ function createOrTag(
  */
 export function sanitizeTagName(tagName: string): string {
     return tagName
-        // NOTE: replace any sla
-        .replace(/[^A-Za-z0-9_-]/g, '_');
+        .replace(/[/\\]/g, '-')
+        .replace(/[^A-Za-z0-9_\-\.]/g, '_');
 }
 
 export interface CreateImageOptions {
