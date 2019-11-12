@@ -1,0 +1,91 @@
+version: 2.1
+
+aliases:
+  - &job-defaults
+      docker:
+        - image: circleci/node:10.3.0
+      working_directory: ~/repo
+
+jobs:
+  setup:
+    <<: *job-defaults
+    steps:
+      - checkout
+      - run:
+          command: yarn install --frozen-lockfile --non-interactive
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - ./repo
+
+  build:
+    <<: *job-defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          command: yarn lint
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - ./repo/dist
+
+  lint:
+    <<: *job-defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          command: yarn lint
+
+  check-dependencies:
+    <<: *job-defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          command: yarn check-dependencies
+
+  check-formatting:
+    <<: *job-defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          command: yarn check-formatting
+
+  release:
+    <<: *job-defaults
+    steps:
+      - attach_workspace:
+          at: ~/
+      - run:
+          command: yarn check-semantic-release
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - setup
+      - build:
+          requires:
+            - setup
+      - lint:
+          requires:
+            - setup
+      - check-dependencies:
+          requires:
+            - build
+      - check-formatting:
+          requires:
+            - setup
+      - release:
+          filter:
+            branches:
+              only:
+                - master
+          requires:
+            - build
+            - lint
+            - check-dependencies
+            - check-formatting
