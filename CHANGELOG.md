@@ -1,3 +1,12 @@
+## [2.1.1](https://github.com/hellivan/docker-snapshot-image/compare/v2.1.0...v2.1.1) (2019-11-12)
+
+
+### Bug Fixes
+
+* **Tags:** make sanitizing of tag-names less restrictive ([0da1664](https://github.com/hellivan/docker-snapshot-image/commit/0da16641408b755b8bf1a1c9f08be1245d6858f9))
+
+
+
 # [2.1.0](https://github.com/hellivan/docker-snapshot-image/compare/v2.0.0...v2.1.0) (2019-11-12)
 
 
