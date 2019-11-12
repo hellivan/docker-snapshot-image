@@ -1,3 +1,12 @@
+## [2.1.2](https://github.com/hellivan/docker-snapshot-image/compare/v2.1.1...v2.1.2) (2019-11-12)
+
+
+### Bug Fixes
+
+* **Tags:** do not replace dots in tagnames ([2b9ea66](https://github.com/hellivan/docker-snapshot-image/commit/2b9ea661e723c0ff36631c41bfa5b9dbf26c6148))
+
+
+
 ## [2.1.1](https://github.com/hellivan/docker-snapshot-image/compare/v2.1.0...v2.1.1) (2019-11-12)
 
 
