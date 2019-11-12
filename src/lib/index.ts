@@ -29,8 +29,8 @@ function spawnCmd(command: string, args: string[], silent: boolean): Promise<voi
     });
 }
 
-function getBranchName(): Promise<string> {
-    return execCmd('git rev-parse --abbrev-ref HEAD');
+async function getBranchName(): Promise<string> {
+    return process.env['BRANCH_NAME'] || (await execCmd('git rev-parse --abbrev-ref HEAD'));
 }
 
 function getCommitHash(): Promise<string> {
@@ -85,12 +85,14 @@ function createOrTag(
 // }
 
 /**
- * Replace / with - and whitespaces with underscores
+ * Replace invalid characters with underscores
  *
  * @param tagName
  */
-function sanitizeTagName(tagName: string): string {
-    return tagName.replace(/\//g, '-').replace(/\W/g, '_');
+export function sanitizeTagName(tagName: string): string {
+    return tagName
+        .replace(/[/\\]/g, '-')
+        .replace(/[^A-Za-z0-9_\-\.]/g, '_');
 }
 
 export interface CreateImageOptions {
