@@ -1,3 +1,12 @@
+# [2.1.0](https://github.com/hellivan/docker-snapshot-image/compare/v2.0.0...v2.1.0) (2019-11-12)
+
+
+### Features
+
+* **BranchName:** add support for fetching branch name from env 'BRANCH_NAME', useful for continuous integration environments ([af0500b](https://github.com/hellivan/docker-snapshot-image/commit/af0500b1af5ed547f944600e924fe79d88d37a6e))
+
+
+
 # [2.0.0](https://github.com/hellivan/docker-snapshot-image/compare/v1.0.3...v2.0.0) (2019-11-11)
 
 
