@@ -3,7 +3,7 @@ version: 2.1
 aliases:
   - &job-defaults
       docker:
-        - image: circleci/node:10.3.0
+        - image: circleci/node:12.13.0
       working_directory: ~/repo
 
 jobs:
