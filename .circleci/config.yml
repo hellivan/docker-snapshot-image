@@ -80,7 +80,7 @@ workflows:
           requires:
             - setup
       - release:
-          filter:
+          filters:
             branches:
               only:
                 - master
