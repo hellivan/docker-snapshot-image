@@ -1,8 +1,6 @@
 import { sanitizeTagName } from './index';
 
-
 describe('sanitizeTagName', () => {
-
     test('sanitizeTagName should replace white-spaces with underscore', () => {
         expect(sanitizeTagName('foo bar tag')).toEqual('foo_bar_tag');
     });
@@ -10,7 +8,6 @@ describe('sanitizeTagName', () => {
     test('sanitizeTagName should replace : with underscore', () => {
         expect(sanitizeTagName('foo:bar:tag')).toEqual('foo_bar_tag');
     });
-
 
     test('sanitizeTagName should replace / with minus', () => {
         expect(sanitizeTagName('foo/bar/tag')).toEqual('foo-bar-tag');
