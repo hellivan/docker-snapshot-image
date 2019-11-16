@@ -11,7 +11,7 @@ async function main(): Promise<void> {
 
     program
         .version(pkg.version)
-        .option('--no-auto', 'Do not create the image with the automatic snapshot-tag useing auto-tag-format')
+        .option('--no-auto', 'Do not create the image with the automatic snapshot-tag specified in auto-tag-format')
         .option(
             '--auto-tag-format <format>',
             'Available options are {branch-name}, {pkg-version} and {commit-hash}',
