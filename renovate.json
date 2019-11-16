@@ -1,0 +1,10 @@
+{
+    "extends": ["config:base"],
+    "rangeStrategy": "bump",
+    "postUpdateOptions": ["yarnDedupeFewer"],
+    "baseBranches": ["develop"],
+    "automerge": true,
+    "major": {
+        "automerge": false
+    }
+}
