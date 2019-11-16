@@ -5,6 +5,9 @@ aliases:
       docker:
         - image: circleci/node:12.13.0
       working_directory: ~/repo
+  - &attach_workspace
+      attach_workspace:
+        at: ~/
 
 jobs:
   setup:
@@ -21,8 +24,7 @@ jobs:
   build:
     <<: *job-defaults
     steps:
-      - attach_workspace:
-          at: ~/
+      - *attach_workspace
       - run:
           command: yarn build
       - persist_to_workspace:
@@ -33,38 +35,34 @@ jobs:
   lint:
     <<: *job-defaults
     steps:
-      - attach_workspace:
-          at: ~/
+      - *attach_workspace
       - run:
           command: yarn lint
 
   check-dependencies:
     <<: *job-defaults
     steps:
-      - attach_workspace:
-          at: ~/
+      - *attach_workspace
       - run:
           command: yarn check-dependencies
 
   check-formatting:
     <<: *job-defaults
     steps:
-      - attach_workspace:
-          at: ~/
+      - *attach_workspace
       - run:
           command: yarn check-formatting
 
   release:
     <<: *job-defaults
     steps:
-      - attach_workspace:
-          at: ~/
+      - *attach_workspace
       - run:
           command: yarn check-semantic-release
 
 workflows:
   version: 2
-  default:
+  install-test-build-and-publish:
     jobs:
       - setup
       - build:
