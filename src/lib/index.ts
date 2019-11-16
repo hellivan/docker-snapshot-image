@@ -90,9 +90,7 @@ function createOrTag(
  * @param tagName
  */
 export function sanitizeTagName(tagName: string): string {
-    return tagName
-        .replace(/[/\\]/g, '-')
-        .replace(/[^A-Za-z0-9_\-\.]/g, '_');
+    return tagName.replace(/[/\\]/g, '-').replace(/[^A-Za-z0-9_\-\.]/g, '_');
 }
 
 export interface CreateImageOptions {

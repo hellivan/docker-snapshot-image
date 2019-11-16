@@ -1,7 +1,7 @@
 {
     "name": "docker-snapshot-image",
     "description": "A module for creating a docker snapshot image of a node project",
-    "version": "2.1.2",
+    "version": "0.0.0-semantic-release",
     "engines": {
         "node": ">=10.3.0"
     },
@@ -13,12 +13,12 @@
     "license": "MIT",
     "scripts": {
         "build": "rimraf ./dist && tsc",
-        "start:bin": "node dist/bin/docker-snapshot-image.js",
-        "flow:changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
-        "version": "npm run flow:changelog && git add CHANGELOG.md",
-        "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+        "check-dependencies": "dependency-check package.json --missing --no-dev",
         "check-formatting": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
+        "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "lint": "eslint ./src --ext .ts",
+        "semantic-release": "semantic-release",
+        "start:bin": "node dist/bin/docker-snapshot-image.js",
         "test": "jest"
     },
     "dependencies": {
@@ -29,10 +29,16 @@
         "docker-snapshot-image": "./dist/bin/docker-snapshot-image.js"
     },
     "devDependencies": {
+        "@semantic-release/changelog": "^3.0.5",
+        "@semantic-release/commit-analyzer": "^6.3.3",
+        "@semantic-release/github": "^5.5.5",
+        "@semantic-release/npm": "^5.3.4",
+        "@semantic-release/release-notes-generator": "^7.3.2",
         "@types/jest": "^24.0.22",
         "@typescript-eslint/eslint-plugin": "^2.6.1",
         "@typescript-eslint/parser": "^2.6.1",
-        "conventional-changelog-cli": "^2.0.27",
+        "condition-circle": "^2.0.2",
+        "dependency-check": "^4.1.0",
         "eslint": "^6.6.0",
         "eslint-config-prettier": "^6.5.0",
         "eslint-plugin-prettier": "^3.1.1",
@@ -40,6 +46,7 @@
         "jest-circus": "^24.9.0",
         "prettier": "^1.19.1",
         "rimraf": "^3.0.0",
+        "semantic-release": "^15.13.30",
         "ts-jest": "^24.1.0",
         "typescript": "^3.7.2"
     }
