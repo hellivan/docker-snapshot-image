@@ -30,7 +30,7 @@ function spawnCmd(command: string, args: string[], silent: boolean): Promise<voi
 }
 
 async function getBranchName(): Promise<string> {
-    return process.env['BRANCH_NAME'] || (await execCmd('git rev-parse --abbrev-ref HEAD'));
+    return process.env['BRANCH_NAME'] || execCmd('git rev-parse --abbrev-ref HEAD');
 }
 
 function getCommitHash(): Promise<string> {
