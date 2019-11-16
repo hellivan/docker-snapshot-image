@@ -1,5 +1,8 @@
 {
-    "extends": ["config:base"],
+    "extends": [
+        "config:base",
+        ":onlyNpm"
+    ],
     "rangeStrategy": "bump",
     "postUpdateOptions": ["yarnDedupeFewer"],
     "baseBranches": ["develop"],
