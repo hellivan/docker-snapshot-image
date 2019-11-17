@@ -26,4 +26,3 @@ export function spawnCmd(command: string, args: string[], silent: boolean): Prom
         });
     });
 }
-

@@ -1,6 +1,6 @@
-import {createOrTag, sanitizeImageName, sanitizeTagName} from './docker-utils';
-import {getBranchName, getCommitHash} from './git-utils';
-import {getPackageInfo} from './npm-utils';
+import { createOrTag, sanitizeImageName, sanitizeTagName } from './docker-utils';
+import { getBranchName, getCommitHash } from './git-utils';
+import { getPackageInfo } from './npm-utils';
 
 export interface CreateImageOptions {
     imageName: string;
