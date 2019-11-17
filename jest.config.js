@@ -1,15 +1,16 @@
 module.exports = {
     projects: ['<rootDir>/test/*'],
-    // reporters: [
-    //     'default',
-    //     ['jest-html-reporter', {
-    //             outputPath: './reports/report.html',
-    //             includeFailureMsg: true
-    //         }],
-    //     ['jest-junit', {
-    //             outputDirectory: './reports'
-    //         }]
-    // ],
+    reporters: [
+        'default',
+        ['jest-html-reporter', {
+            outputPath: './reports/html/jest.html',
+            includeFailureMsg: true
+        }],
+        ['jest-junit', {
+            outputDirectory: './reports/junit/',
+            outputName: 'jest.xml'
+        }]
+    ],
     // collectCoverageFrom: [
     //     '**/src/**/*.{ts,js}',
     //     '!**/src/**/*.spec.{ts,js}',

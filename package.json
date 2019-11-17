@@ -17,9 +17,11 @@
         "check-formatting": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "lint": "eslint ./src --ext .ts",
+        "lint:ci": "eslint ./src --ext .ts --format junit -o reports/junit/eslint.xml",
         "semantic-release": "semantic-release",
         "start:bin": "node dist/bin/docker-snapshot-image.js",
-        "test": "jest"
+        "test": "jest",
+        "test:ci": "jest"
     },
     "dependencies": {
         "commander": "^4.0.1"
@@ -44,6 +46,8 @@
         "eslint-plugin-prettier": "^3.1.1",
         "jest": "^24.9.0",
         "jest-circus": "^24.9.0",
+        "jest-html-reporter": "^2.7.0",
+        "jest-junit": "^9.0.0",
         "prettier": "^1.19.1",
         "rimraf": "^3.0.0",
         "semantic-release": "^15.13.30",

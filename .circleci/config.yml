@@ -37,14 +37,18 @@ jobs:
     steps:
       - *attach_workspace
       - run:
-          command: yarn lint
+          command: yarn lint:ci
+      - store_test_results:
+          path: reports/junit
 
   test:
     <<: *job-defaults
     steps:
       - *attach_workspace
       - run:
-          command: yarn test
+          command: yarn test:ci
+      - store_test_results:
+          path: reports/junit
 
   check-dependencies:
     <<: *job-defaults
