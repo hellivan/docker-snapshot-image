@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 
 import * as program from 'commander';
+import {join as joinPath} from 'path';
 
-import { createImage, CreateImageOptions } from '../lib';
+import { createImage, CreateImageOptions, NpmUtils } from '../lib';
 
 async function main(): Promise<void> {
-    // TODO: replace require call
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const pkg = require('../../package.json');
+    const pkgInfo = await NpmUtils.getPackageInfo(joinPath(__dirname, '..', '..', 'package.json'));
 
     program
-        .version(pkg.version)
+        .version(pkgInfo.version)
         .option('--no-auto', 'Do not create the image with the automatic snapshot-tag specified in auto-tag-format')
         .option(
             '--auto-tag-format <format>',

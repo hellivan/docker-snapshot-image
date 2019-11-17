@@ -1,6 +1,6 @@
 import { createOrTag, sanitizeImageName, sanitizeTagName } from './docker-utils';
 import { getBranchName, getCommitHash } from './git-utils';
-import { getPackageInfo } from './npm-utils';
+import { NpmUtils } from './npm-utils';
 
 export interface CreateImageOptions {
     imageName: string;
@@ -19,7 +19,11 @@ export async function createImage({
     silentDockerMode,
     autoTagFormat
 }: CreateImageOptions): Promise<string | null> {
-    const [commitHash, info, branchName] = await Promise.all([getCommitHash(), getPackageInfo(), getBranchName()]);
+    const [commitHash, info, branchName] = await Promise.all([
+        getCommitHash(),
+        NpmUtils.getPackageInfo('./package.json'),
+        getBranchName(process.env)
+    ]);
 
     imageName = sanitizeImageName(imageName || info.name);
 
@@ -42,3 +46,5 @@ export async function createImage({
 
     return dockerImage;
 }
+
+export { NpmUtils } from './npm-utils';

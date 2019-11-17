@@ -3,22 +3,26 @@ module.exports = {
     reporters: [
         'default',
         ['jest-html-reporter', {
-            outputPath: './reports/html/jest.html',
+            outputPath: './reports/html/jest.junit.html',
             includeFailureMsg: true
         }],
         ['jest-junit', {
             outputDirectory: './reports/junit/',
-            outputName: 'jest.xml'
+            outputName: 'jest.junit.xml'
         }]
     ],
-    // collectCoverageFrom: [
-    //     '**/src/**/*.{ts,js}',
-    //     '!**/src/**/*.spec.{ts,js}',
-    //     '!**/node_modules/**'
-    // ],
-    // collectCoverage: true,
-    // coverageReporters: ['cobertura', 'text', 'lcov'],
-    // coverageDirectory: './reports',
+    collectCoverageFrom: [
+        '**/src/**/*.ts',
+        '!**/src/**/*.spec.ts',
+        '!**/node_modules/**'
+    ],
+    coverageReporters: [
+        'html',
+        'text',
+        'text-summary',
+        'cobertura'
+    ],
+    coverageDirectory: './reports/coverage',
     // coverageThreshold: {
     //     global: {
     //         statements: 100,

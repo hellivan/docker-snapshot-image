@@ -1,10 +1,16 @@
 import { existsSync as fileExistsSync } from 'fs';
 import { resolve as resolvePath } from 'path';
 
-export async function getPackageInfo(): Promise<{ name: string; version: string }> {
-    const pkgPath = resolvePath('./package.json');
+import { FileUtils } from './file-utils';
 
-    if (!fileExistsSync(pkgPath)) throw new Error('package.json not not found in cwd!');
-    // TODO: replace require call
-    return require(pkgPath);
+export class NpmUtils {
+    public static async getPackageInfo(packageJsonFilePath: string): Promise<{ name: string; version: string }> {
+        const pkgPath = resolvePath(packageJsonFilePath);
+    
+        if (!fileExistsSync(pkgPath)) {
+            throw new Error(`File '${packageJsonFilePath}' not not found!`);
+        }
+    
+        return FileUtils.readJsonFile(pkgPath);
+    }    
 }

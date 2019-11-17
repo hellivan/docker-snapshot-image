@@ -21,7 +21,7 @@
         "semantic-release": "semantic-release",
         "start:bin": "node dist/bin/docker-snapshot-image.js",
         "test": "jest",
-        "test:ci": "jest"
+        "test:ci": "jest --coverage"
     },
     "dependencies": {
         "commander": "^4.0.1"
