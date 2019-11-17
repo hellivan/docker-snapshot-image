@@ -1,4 +1,4 @@
-import { sanitizeTagName } from './index';
+import { sanitizeTagName } from './docker-utils';
 
 describe('sanitizeTagName', () => {
     test('sanitizeTagName should replace white-spaces with underscore', () => {
