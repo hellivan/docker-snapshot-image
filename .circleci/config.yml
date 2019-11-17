@@ -39,6 +39,13 @@ jobs:
       - run:
           command: yarn lint
 
+  test:
+    <<: *job-defaults
+    steps:
+      - *attach_workspace
+      - run:
+          command: yarn test
+
   check-dependencies:
     <<: *job-defaults
     steps:
@@ -71,6 +78,9 @@ workflows:
       - lint:
           requires:
             - setup
+      - test:
+          requires:
+            - setup
       - check-dependencies:
           requires:
             - build
@@ -85,5 +95,6 @@ workflows:
           requires:
             - build
             - lint
+            - test
             - check-dependencies
             - check-formatting
