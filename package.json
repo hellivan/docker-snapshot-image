@@ -22,7 +22,7 @@
         "test": "jest"
     },
     "dependencies": {
-        "@types/node": "^10.17.5",
+        "@types/node": "^10.17.6",
         "commander": "^4.0.1"
     },
     "bin": {
