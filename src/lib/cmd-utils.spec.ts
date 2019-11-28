@@ -13,13 +13,17 @@ class SpawnedCommandMock extends EventEmitter {
     public readonly stderr = new EventEmitter();
 }
 
+type ExecMockCbFn = (err: Error | null, stdout: string | null, stderr: string | null) => void;
+
 describe('execCmd', () => {
     beforeEach(() => {
+        execMock.mockRestore();
+        spawnMock.mockRestore();
         jest.restoreAllMocks();
     });
 
     test('execCmd should execute a command and return the output as a string', async () => {
-        execMock.mockImplementationOnce((cmd: string, cbFn: (err: any, stdout: any, stderr: any) => void) => {
+        execMock.mockImplementationOnce((cmd: string, cbFn: ExecMockCbFn) => {
             process.nextTick(() => cbFn(null, 'test-output', null));
         });
 
@@ -30,7 +34,7 @@ describe('execCmd', () => {
     });
 
     test('execCmd result should be trimmed', async () => {
-        execMock.mockImplementationOnce((cmd: string, cbFn: (err: any, stdout: any, stderr: any) => void) => {
+        execMock.mockImplementationOnce((cmd: string, cbFn: ExecMockCbFn) => {
             process.nextTick(() => cbFn(null, ' test-output ', null));
         });
 
@@ -42,7 +46,7 @@ describe('execCmd', () => {
     test('execCmd should reject if exec fails', async () => {
         expect.assertions(1);
         const execError = new Error('custom error');
-        execMock.mockImplementationOnce((cmd: string, cbFn: (err: any, stdout: any, stderr: any) => void) => {
+        execMock.mockImplementationOnce((cmd: string, cbFn: ExecMockCbFn) => {
             process.nextTick(() => cbFn(execError, null, null));
         });
 
@@ -61,7 +65,7 @@ describe('spawnCmd', () => {
 
     test('spawnCmd should spawn command with parameters and resolve on exit code 0', async () => {
         const cmdMock = new SpawnedCommandMock();
-        spawnMock.mockImplementationOnce((cmd: string, args: string[]) => cmdMock);
+        spawnMock.mockImplementationOnce(() => cmdMock);
 
         const resultPromise = spawnCmd('test-bin', ['param1', 'param2'], true);
 
@@ -74,7 +78,7 @@ describe('spawnCmd', () => {
 
     test('spawnCmd should spawn command and forward stdout/stderr', async () => {
         const cmdMock = new SpawnedCommandMock();
-        spawnMock.mockImplementationOnce((cmd: string, args: string[]) => cmdMock);
+        spawnMock.mockImplementationOnce(() => cmdMock);
 
         const stdoutSpy = jest.spyOn(process.stdout, 'write').mockImplementationOnce(() => true);
         const stderrSpy = jest.spyOn(process.stderr, 'write').mockImplementationOnce(() => true);
@@ -94,7 +98,7 @@ describe('spawnCmd', () => {
 
     test('spawnCmd should spawn command without forwarding stdout/stderr in silent mode', async () => {
         const cmdMock = new SpawnedCommandMock();
-        spawnMock.mockImplementationOnce((cmd: string, args: string[]) => cmdMock);
+        spawnMock.mockImplementationOnce(() => cmdMock);
 
         const stdoutSpy = jest.spyOn(process.stdout, 'write').mockImplementationOnce(() => true);
         const stderrSpy = jest.spyOn(process.stderr, 'write').mockImplementationOnce(() => true);
@@ -116,7 +120,7 @@ describe('spawnCmd', () => {
         expect.assertions(1);
 
         const cmdMock = new SpawnedCommandMock();
-        spawnMock.mockImplementationOnce((cmd: string, args: string[]) => cmdMock);
+        spawnMock.mockImplementationOnce(() => cmdMock);
 
         const resultPromise = spawnCmd('test-bin', ['param1', 'param2'], true);
 
@@ -135,7 +139,7 @@ describe('spawnCmd', () => {
         const spawnError = new Error('custom error');
 
         const cmdMock = new SpawnedCommandMock();
-        spawnMock.mockImplementationOnce((cmd: string, args: string[]) => cmdMock);
+        spawnMock.mockImplementationOnce(() => cmdMock);
 
         const resultPromise = spawnCmd('test-bin', [], true);
 

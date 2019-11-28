@@ -1,6 +1,6 @@
 import { spawnCmd } from './cmd-utils';
 
-export async function createDockerImage(tag: string, testMode: boolean, silentDockerMode: boolean): Promise<string> {
+async function createDockerImage(tag: string, testMode: boolean, silentDockerMode: boolean): Promise<string> {
     const command = 'docker';
     const args = ['build', '--force-rm', '-t', tag, './'];
     console.log(`Creating image using command '${command} ${args.join(' ')}'`);
@@ -10,7 +10,7 @@ export async function createDockerImage(tag: string, testMode: boolean, silentDo
     return tag;
 }
 
-export async function tagImage(
+async function tagImage(
     existingTag: string,
     newTag: string,
     testMode: boolean,

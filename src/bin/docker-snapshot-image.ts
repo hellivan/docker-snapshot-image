@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 import * as program from 'commander';
-import {join as joinPath} from 'path';
+import { join as joinPath } from 'path';
 
-import { createImage, CreateImageOptions, NpmUtils } from '../lib';
+import { CreateImageOptions, NpmUtils, createImage } from '../lib';
 
 async function main(): Promise<void> {
     const pkgInfo = await NpmUtils.getPackageInfo(joinPath(__dirname, '..', '..', 'package.json'));

@@ -1,16 +1,16 @@
 import { existsSync as fileExistsSync } from 'fs';
 import { resolve as resolvePath } from 'path';
 
-import { FileUtils } from './file-utils';
+import { JsonUtils } from './json-utils';
 
 export class NpmUtils {
     public static async getPackageInfo(packageJsonFilePath: string): Promise<{ name: string; version: string }> {
         const pkgPath = resolvePath(packageJsonFilePath);
-    
+
         if (!fileExistsSync(pkgPath)) {
-            throw new Error(`File '${packageJsonFilePath}' not not found!`);
+            throw new Error(`Packageinfo file '${packageJsonFilePath}' not not found!`);
         }
-    
-        return FileUtils.readJsonFile(pkgPath);
-    }    
+
+        return JsonUtils.readJsonFile(pkgPath);
+    }
 }

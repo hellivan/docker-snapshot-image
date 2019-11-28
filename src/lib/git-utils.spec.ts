@@ -5,6 +5,7 @@ import { getBranchName, getCommitHash } from './git-utils';
 
 describe('getBranchName', () => {
     beforeEach(() => {
+        execCmdMock.mockRestore();
         jest.restoreAllMocks();
     });
 
@@ -24,6 +25,7 @@ describe('getBranchName', () => {
 
 describe('getCommitHash', () => {
     beforeEach(() => {
+        execCmdMock.mockRestore();
         jest.restoreAllMocks();
     });
 
