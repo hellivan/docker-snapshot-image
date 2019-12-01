@@ -2,11 +2,7 @@ const spawnCmdMockFn = jest.fn();
 jest.mock('./cmd-utils', () => ({
     spawnCmd: spawnCmdMockFn
 }));
-import { 
-    createOrTag,
-    sanitizeImageName,
-    sanitizeTagName
-} from './docker-utils';
+import { createOrTag, sanitizeImageName, sanitizeTagName } from './docker-utils';
 
 describe('sanitizeTagName', () => {
     test('sanitizeTagName should replace white-spaces with underscore', () => {
