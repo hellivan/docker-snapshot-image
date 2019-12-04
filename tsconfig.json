@@ -8,5 +8,5 @@
         "declaration": true,
         "strict": true
     },
-    "files": ["src/lib/index.ts", "src/bin/docker-snapshot-image.ts"]
+    "exclude": ["node_modules", "dist"]
 }
