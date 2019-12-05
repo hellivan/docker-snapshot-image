@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.5
 
 aliases:
   - &job-defaults
@@ -49,6 +51,10 @@ jobs:
           command: yarn test:ci
       - store_test_results:
           path: reports/junit
+      - codecov/upload:
+          file: reports/coverage/cobertura-coverage.xml
+          flags: unittests
+
 
   check-dependencies:
     <<: *job-defaults
