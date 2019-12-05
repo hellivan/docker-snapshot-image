@@ -1,5 +1,13 @@
 # docker-snapshot-image
 
+[![Build Status](https://img.shields.io/circleci/build/github/hellivan/docker-snapshot-image/master?logo=circleci&style=flat-square)](https://circleci.com/gh/hellivan/docker-snapshot-image)
+[![Code Coverage](https://img.shields.io/codecov/c/github/hellivan/docker-snapshot-image/master?logo=codecov&style=flat-square)](https://codecov.io/gh/hellivan/docker-snapshot-image)
+[![MIT License](https://img.shields.io/npm/l/docker-snapshot-image?style=flat-square)](LICENSE)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovatebot.com/)
+[![NPM Package](https://img.shields.io/npm/v/docker-snapshot-image?logo=npm&style=flat-square)](https://www.npmjs.com/package/docker-snapshot-image)
+[![NPM Package Downloads](https://img.shields.io/npm/dm/docker-snapshot-image?logo=npm&style=flat-square)](https://www.npmjs.com/package/docker-snapshot-image)
+
 Command line utiltiy that allows to easily create docker snapshot-images from an exising node.js project. The resulting images by default will be tagged as follows: `{project-name}:{project-version}-{git-short-hash}`
 
 ## Prerequisites

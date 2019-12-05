@@ -1,9 +1,9 @@
 {
     "name": "docker-snapshot-image",
-    "description": "A module for creating a docker snapshot image of a node project",
+    "description": "A cli tool for creating a docker snapshot image of a node project",
     "version": "0.0.0-semantic-release",
     "engines": {
-        "node": ">=10.3.0"
+        "node": ">=12.8.1"
     },
     "repository": {
         "type": "git",
@@ -17,12 +17,13 @@
         "check-formatting": "prettier --check \"src/**/*.ts\" \"test/**/*.ts\"",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
         "lint": "eslint ./src --ext .ts",
+        "lint:ci": "eslint ./src --ext .ts --format junit -o reports/junit/eslint.xml",
         "semantic-release": "semantic-release",
         "start:bin": "node dist/bin/docker-snapshot-image.js",
-        "test": "jest"
+        "test": "jest",
+        "test:ci": "jest --coverage"
     },
     "dependencies": {
-        "@types/node": "^10.3.0",
         "commander": "^4.0.1"
     },
     "bin": {
@@ -33,21 +34,24 @@
         "@semantic-release/commit-analyzer": "^6.3.3",
         "@semantic-release/github": "^5.5.5",
         "@semantic-release/npm": "^5.3.4",
-        "@semantic-release/release-notes-generator": "^7.3.2",
-        "@types/jest": "^24.0.22",
-        "@typescript-eslint/eslint-plugin": "^2.6.1",
-        "@typescript-eslint/parser": "^2.6.1",
+        "@semantic-release/release-notes-generator": "^7.3.3",
+        "@types/jest": "^24.0.23",
+        "@types/node": "12.7.12",
+        "@typescript-eslint/eslint-plugin": "^2.7.0",
+        "@typescript-eslint/parser": "^2.7.0",
         "condition-circle": "^2.0.2",
         "dependency-check": "^4.1.0",
         "eslint": "^6.6.0",
-        "eslint-config-prettier": "^6.5.0",
+        "eslint-config-prettier": "^6.6.0",
         "eslint-plugin-prettier": "^3.1.1",
         "jest": "^24.9.0",
         "jest-circus": "^24.9.0",
+        "jest-html-reporter": "^2.7.0",
+        "jest-junit": "^9.0.0",
         "prettier": "^1.19.1",
         "rimraf": "^3.0.0",
         "semantic-release": "^15.13.30",
         "ts-jest": "^24.1.0",
-        "typescript": "^3.7.2"
+        "typescript": "^3.7.3"
     }
 }

@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.5
 
 aliases:
   - &job-defaults
@@ -37,7 +39,22 @@ jobs:
     steps:
       - *attach_workspace
       - run:
-          command: yarn lint
+          command: yarn lint:ci
+      - store_test_results:
+          path: reports/junit
+
+  test:
+    <<: *job-defaults
+    steps:
+      - *attach_workspace
+      - run:
+          command: yarn test:ci
+      - store_test_results:
+          path: reports/junit
+      - codecov/upload:
+          file: reports/coverage/cobertura-coverage.xml
+          flags: unittests
+
 
   check-dependencies:
     <<: *job-defaults
@@ -71,6 +88,9 @@ workflows:
       - lint:
           requires:
             - setup
+      - test:
+          requires:
+            - setup
       - check-dependencies:
           requires:
             - build
@@ -85,5 +105,6 @@ workflows:
           requires:
             - build
             - lint
+            - test
             - check-dependencies
             - check-formatting

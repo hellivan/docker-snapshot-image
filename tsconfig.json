@@ -1,12 +1,12 @@
 {
     "compilerOptions": {
         "module": "commonjs",
-        "target": "es2017",
+        "target": "es2019",
         "removeComments": true,
         "sourceMap": true,
         "outDir": "dist",
         "declaration": true,
         "strict": true
     },
-    "files": ["src/lib/index.ts", "src/bin/docker-snapshot-image.ts"]
+    "exclude": ["node_modules", "dist"]
 }
