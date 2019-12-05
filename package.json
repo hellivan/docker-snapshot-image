@@ -1,6 +1,6 @@
 {
     "name": "docker-snapshot-image",
-    "description": "A module for creating a docker snapshot image of a node project",
+    "description": "A cli tool for creating a docker snapshot image of a node project",
     "version": "0.0.0-semantic-release",
     "engines": {
         "node": ">=12.8.1"
