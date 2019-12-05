@@ -1,10 +1,12 @@
-[![Build Status][build-status-image]][build-status-url]
-[![MIT License][license-image]][license-url]
-[![semantic-release][semantic-release-image]][semantic-release-url]
-[![Renovate enabled][renovate-image]][renovate-url]
-[![NPM Package][npm-version-image]][npm-url]
-[![NPM Package Downloads][npm-downloads-image]][npm-url]
 # docker-snapshot-image
+
+[![Build Status](https://img.shields.io/circleci/build/github/hellivan/docker-snapshot-image/master?logo=circleci&style=flat-square)](https://circleci.com/gh/hellivan/docker-snapshot-image)
+[![Code Coverage](https://img.shields.io/codecov/c/github/hellivan/docker-snapshot-image/master?logo=codecov&style=flat-square)](https://codecov.io/gh/hellivan/docker-snapshot-image)
+[![MIT License](https://img.shields.io/npm/l/docker-snapshot-image?style=flat-square)](LICENSE)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=flat-square)](https://github.com/semantic-release/semantic-release)
+[![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg?style=flat-square)](https://renovatebot.com/)
+[![NPM Package](https://img.shields.io/npm/v/docker-snapshot-image?logo=npm&style=flat-square)](https://www.npmjs.com/package/docker-snapshot-image)
+[![NPM Package Downloads](https://img.shields.io/npm/dm/docker-snapshot-image?logo=npm&style=flat-square)](https://www.npmjs.com/package/docker-snapshot-image)
 
 Command line utiltiy that allows to easily create docker snapshot-images from an exising node.js project. The resulting images by default will be tagged as follows: `{project-name}:{project-version}-{git-short-hash}`
 
@@ -49,15 +51,3 @@ However, for a fully detailed description of all flags that can be used, see the
 For branchname determination we are generally using the `git rev-parse --abbrev-ref HEAD` command. However, since some CI environments (e.g. Jenkins)
 are not actually checking out the actual branch but rather the pushed commit itself, we are optionally checking for environment varable `BRANCH_NAME`
 before starting branchname determination using `git rev-parse`.
-
-[license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat
-[license-url]: LICENSE
-[build-status-image]: https://circleci.com/gh/hellivan/docker-snapshot-image/tree/master.svg?style=svg
-[build-status-url]: https://circleci.com/gh/hellivan/docker-snapshot-image/tree/master
-[renovate-image]: https://img.shields.io/badge/renovate-enabled-brightgreen.svg
-[renovate-url]: https://renovatebot.com/
-[semantic-release-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
-[semantic-release-url]: https://github.com/semantic-release/semantic-release
-[npm-url]: https://npmjs.org/package/docker-snapshot-image
-[npm-version-image]: http://img.shields.io/npm/v/docker-snapshot-image.svg?style=flat
-[npm-downloads-image]: http://img.shields.io/npm/dm/docker-snapshot-image.svg?style=flat
