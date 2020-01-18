@@ -37,11 +37,11 @@
         "@semantic-release/release-notes-generator": "^7.3.5",
         "@types/jest": "^24.9.0",
         "@types/node": "12.12.14",
-        "@typescript-eslint/eslint-plugin": "^2.10.0",
-        "@typescript-eslint/parser": "^2.10.0",
+        "@typescript-eslint/eslint-plugin": "^2.16.0",
+        "@typescript-eslint/parser": "^2.16.0",
         "condition-circle": "^2.0.2",
         "dependency-check": "^4.1.0",
-        "eslint": "^6.7.2",
+        "eslint": "^6.8.0",
         "eslint-config-prettier": "^6.9.0",
         "eslint-plugin-prettier": "^3.1.2",
         "jest": "^24.9.0",
@@ -52,6 +52,6 @@
         "rimraf": "^3.0.0",
         "semantic-release": "^16.0.2",
         "ts-jest": "^24.3.0",
-        "typescript": "^3.7.3"
+        "typescript": "~3.7.5"
     }
 }
