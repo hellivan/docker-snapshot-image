@@ -31,9 +31,9 @@
     },
     "devDependencies": {
         "@semantic-release/changelog": "^3.0.6",
-        "@semantic-release/commit-analyzer": "^6.3.3",
-        "@semantic-release/github": "^5.5.5",
-        "@semantic-release/npm": "^5.3.4",
+        "@semantic-release/commit-analyzer": "^7.0.0",
+        "@semantic-release/github": "^6.0.1",
+        "@semantic-release/npm": "^6.0.0",
         "@semantic-release/release-notes-generator": "^7.3.5",
         "@types/jest": "^24.9.0",
         "@types/node": "12.12.14",
@@ -50,7 +50,7 @@
         "jest-junit": "^10.0.0",
         "prettier": "^1.19.1",
         "rimraf": "^3.0.0",
-        "semantic-release": "^15.13.31",
+        "semantic-release": "^16.0.2",
         "ts-jest": "^24.3.0",
         "typescript": "^3.7.3"
     }
