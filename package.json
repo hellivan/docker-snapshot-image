@@ -52,6 +52,6 @@
         "rimraf": "^3.0.0",
         "semantic-release": "^15.13.31",
         "ts-jest": "^24.3.0",
-        "typescript": "^3.7.3"
+        "typescript": "^3.7.5"
     }
 }
