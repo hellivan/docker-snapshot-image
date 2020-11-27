@@ -50,7 +50,7 @@
         "jest-junit": "^10.0.0",
         "prettier": "^1.19.1",
         "rimraf": "^3.0.2",
-        "semantic-release": "^16.0.4",
+        "semantic-release": "^17.0.0",
         "ts-jest": "^24.3.0",
         "typescript": "~3.8.3"
     }
