@@ -3,7 +3,7 @@
     "description": "A cli tool for creating a docker snapshot image of a node project",
     "version": "0.0.0-semantic-release",
     "engines": {
-        "node": ">=12.8.1"
+        "node": ">=v12.22.1"
     },
     "repository": {
         "type": "git",
