@@ -24,7 +24,7 @@
         "test:ci": "jest --coverage"
     },
     "dependencies": {
-        "commander": "^4.1.0"
+        "commander": "^7.2.0"
     },
     "bin": {
         "docker-snapshot-image": "./dist/bin/docker-snapshot-image.js"
