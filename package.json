@@ -48,7 +48,7 @@
         "jest-circus": "^25.1.0",
         "jest-html-reporter": "^2.8.1",
         "jest-junit": "^10.0.0",
-        "prettier": "^1.19.1",
+        "prettier": "^2.4.1",
         "rimraf": "^3.0.2",
         "semantic-release": "^16.0.4",
         "ts-jest": "^24.3.0",
