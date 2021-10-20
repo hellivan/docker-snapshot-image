@@ -35,7 +35,7 @@
         "@semantic-release/github": "^6.0.2",
         "@semantic-release/npm": "^6.0.0",
         "@semantic-release/release-notes-generator": "^7.3.5",
-        "@types/jest": "^24.9.1",
+        "@types/jest": "^27.0.2",
         "@types/node": "12.12.30",
         "@typescript-eslint/eslint-plugin": "^2.24.0",
         "@typescript-eslint/parser": "^2.24.0",
