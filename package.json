@@ -12,7 +12,7 @@
     "main": "./dist/lib/index.js",
     "license": "MIT",
     "scripts": {
-        "build": "rimraf ./dist && tsc",
+        "build": "rimraf ./dist && tsc -p tsconfig.build.json",
         "check-dependencies": "dependency-check package.json --missing --no-dev",
         "check-formatting": "prettier --check .",
         "format": "prettier --write .",
