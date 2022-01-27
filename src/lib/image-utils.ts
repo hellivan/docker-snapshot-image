@@ -1,4 +1,5 @@
-import { createOrTag, sanitizeImageName, sanitizeTagName } from './docker-utils';
+import { BasicCredentials } from './credentials';
+import { createOrTag, pushImage, sanitizeImageName, sanitizeTagName } from './docker-utils';
 import { getBranchName, getCommitHash } from './git-utils';
 import { NpmUtils } from './npm-utils';
 
@@ -9,6 +10,14 @@ export interface CreateImageOptions {
     testMode: boolean;
     silentDockerMode: boolean;
     autoTagFormat: string;
+    push: boolean;
+}
+
+export function getRegistryCredentials(env: Record<string, string | undefined>): BasicCredentials | undefined {
+    const username = env['CONTAINER_IMAGE_REGISTRY_USER'];
+    const password = env['CONTAINER_IMAGE_REGISTRY_PASS'];
+    if (username == null || password == null) return undefined;
+    return { username, password };
 }
 
 export class ImageUtils {
@@ -18,13 +27,15 @@ export class ImageUtils {
         autoTag,
         testMode,
         silentDockerMode,
-        autoTagFormat
-    }: CreateImageOptions): Promise<string | null> {
+        autoTagFormat,
+        push,
+    }: CreateImageOptions): Promise<string[]> {
         const packageInfo = await NpmUtils.getPackageInfo('./package.json');
 
         imageName = sanitizeImageName(imageName || packageInfo.name);
 
-        let dockerImageTag: string | null = null;
+        let latestDockerImageTag: string | null = null;
+        const dockerImageTags: string[] = [];
 
         if (autoTag) {
             const [commitHash, branchName] = await Promise.all([getCommitHash(), getBranchName(process.env)]);
@@ -36,18 +47,36 @@ export class ImageUtils {
 
             const sanitizedDefaultTag = sanitizeTagName(defaultTag);
 
-            dockerImageTag = await createOrTag(
-                dockerImageTag,
+            latestDockerImageTag = await createOrTag(
+                latestDockerImageTag,
                 `${imageName}:${sanitizedDefaultTag}`,
                 testMode,
                 silentDockerMode
             );
+
+            dockerImageTags.push(`${imageName}:${sanitizedDefaultTag}`);
         }
 
         if (fixedTag) {
-            dockerImageTag = await createOrTag(dockerImageTag, `${imageName}:${fixedTag}`, testMode, silentDockerMode);
+            latestDockerImageTag = await createOrTag(
+                latestDockerImageTag,
+                `${imageName}:${fixedTag}`,
+                testMode,
+                silentDockerMode
+            );
+            dockerImageTags.push(`${imageName}:${fixedTag}`);
         }
 
-        return dockerImageTag;
+        if (push) {
+            const registryCredentials = getRegistryCredentials(process.env);
+            for (const dockerImageTag of dockerImageTags) {
+                console.log(`Pushing image "${dockerImageTag}"`);
+                if (!testMode) {
+                    await pushImage(dockerImageTag, registryCredentials);
+                }
+            }
+        }
+
+        return dockerImageTags;
     }
 }

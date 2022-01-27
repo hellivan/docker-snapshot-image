@@ -1,4 +1,7 @@
+import axios from 'axios';
+
 import { spawnCmd } from './cmd-utils';
+import { BasicCredentials } from './credentials';
 
 async function createDockerImage(tag: string, testMode: boolean, silentDockerMode: boolean): Promise<string> {
     const command = 'docker';
@@ -51,4 +54,32 @@ export function sanitizeTagName(tagName: string): string {
  */
 export function sanitizeImageName(imageName: string): string {
     return imageName.replace(/[/\\]/g, '-').replace(/[^A-Za-z0-9_\-\.]/g, '_');
+}
+
+// curl -XGET --unix-socket /var/run/docker.sock http://localhost/images/json
+// curl -i -XPOST -H "X-Registry-Auth: Base64({"username": "foo", "password": "bar"})" --unix-socket /var/run/docker.sock http://localhost/images/docker.solunio.com/common/hitower-service.data-producer:7.0.4/push
+export async function pushImage(existingTag: string, credentials: BasicCredentials | undefined): Promise<void> {
+    const headers = credentials != null ? { 'X-Registry-Auth': encodeRegistryAuth(credentials) } : undefined;
+    const result = await axios
+        .create({ socketPath: '/var/run/docker.sock', timeout: 10 * 60 * 1000 })
+        .post<string>(`http://localhost/v1.41/images/${existingTag}/push`, {}, { headers });
+
+    for (const line of result.data.split('\n')) {
+        const parsed = JSON.parse(line);
+        if (parsed.errorDetail != null || parsed.error != null) {
+            throw new Error(`Error while pushing image "${existingTag}": "${parsed.error}"`);
+        }
+    }
+
+    console.log(`Pushed image "${existingTag}"`);
+}
+
+interface DockerRegistryAuthData {
+    readonly username: string;
+    readonly password: string;
+}
+
+function encodeRegistryAuth(credentials: BasicCredentials): string {
+    const dockerRegistryAuthData: DockerRegistryAuthData = credentials;
+    return Buffer.from(JSON.stringify(dockerRegistryAuthData)).toString('base64');
 }

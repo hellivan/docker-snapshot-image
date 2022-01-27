@@ -1,8 +1,11 @@
+import axios from 'axios';
+import * as nock from 'nock';
+
 const spawnCmdMockFn = jest.fn();
 jest.mock('./cmd-utils', () => ({
-    spawnCmd: spawnCmdMockFn
+    spawnCmd: spawnCmdMockFn,
 }));
-import { createOrTag, sanitizeImageName, sanitizeTagName } from './docker-utils';
+import { createOrTag, pushImage, sanitizeImageName, sanitizeTagName } from './docker-utils';
 
 describe('sanitizeTagName', () => {
     test('sanitizeTagName should replace white-spaces with underscore', () => {
@@ -114,5 +117,89 @@ describe('createOrTag', () => {
         const tag = await createOrTag('existing-tag', 'new-tag', true, false);
         expect(spawnCmdSpy).not.toHaveBeenCalled();
         expect(tag).toEqual('existing-tag');
+    });
+});
+
+describe('pushImage', () => {
+    const dockerApiNock = nock('http://localhost/v1.41');
+
+    beforeEach(() => {
+        jest.restoreAllMocks();
+        nock.cleanAll();
+    });
+
+    afterEach(() => {
+        dockerApiNock.done();
+    });
+
+    test('should create a client on /var/run/docker.sock', async () => {
+        const createSpy = jest.spyOn(axios, 'create');
+
+        const dockerImageWithTag = 'some.registry.com/repo/image:1.2.3';
+
+        dockerApiNock.post(`/images/${dockerImageWithTag}/push`).reply(
+            200,
+            `{"status":"1.2.3: digest: sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6 size: 2200"}
+{"progressDetail":{},"aux":{"Tag":"1.2.3","Digest":"sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6","Size":2200}}`
+        );
+
+        await pushImage(dockerImageWithTag, undefined);
+
+        expect(createSpy).toHaveBeenCalledTimes(1);
+        expect(createSpy).toHaveBeenCalledWith({ socketPath: '/var/run/docker.sock', timeout: 10 * 60 * 1000 });
+    });
+
+    test('should send a push request to docker api without credentials if not specified', async () => {
+        const dockerImageWithTag = 'some.registry.com/repo/image:1.2.3';
+
+        dockerApiNock.post(`/images/${dockerImageWithTag}/push`, {}, { badheaders: ['X-Registry-Auth'] }).reply(
+            200,
+            `{"status":"1.2.3: digest: sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6 size: 2200"}
+{"progressDetail":{},"aux":{"Tag":"1.2.3","Digest":"sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6","Size":2200}}`
+        );
+
+        await pushImage(dockerImageWithTag, undefined);
+    });
+
+    test('should send a push request to docker api with credentials if specified', async () => {
+        const dockerImageWithTag = 'some.registry.com/repo/image:1.2.3';
+
+        dockerApiNock
+            .post(
+                `/images/${dockerImageWithTag}/push`,
+                {},
+                {
+                    reqheaders: { 'X-Registry-Auth': 'eyJ1c2VybmFtZSI6ImZvbyIsInBhc3N3b3JkIjoiYmFyIn0=' },
+                }
+            )
+            .reply(
+                200,
+                `{"status":"1.2.3: digest: sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6 size: 2200"}
+{"progressDetail":{},"aux":{"Tag":"1.2.3","Digest":"sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6","Size":2200}}`
+            );
+
+        await pushImage(dockerImageWithTag, { username: 'foo', password: 'bar' });
+    });
+
+    test('should throw an error if response contains an error', async () => {
+        const dockerImageWithTag = 'some.registry.com/repo/image:1.2.3';
+
+        dockerApiNock
+            .post(
+                `/images/${dockerImageWithTag}/push`,
+                {},
+                {
+                    reqheaders: { 'X-Registry-Auth': 'eyJ1c2VybmFtZSI6ImZvbyIsInBhc3N3b3JkIjoiYmFyIn0=' },
+                }
+            )
+            .reply(
+                200,
+                `{"status":"1.2.3: digest: sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6 size: 2200"}
+{"errorDetail":{"message":"denied: requested access to the resource is denied"},"error":"denied: requested access to the resource is denied"}`
+            );
+
+        await expect(pushImage(dockerImageWithTag, { username: 'foo', password: 'bar' })).rejects.toMatchObject({
+            message: `Error while pushing image "some.registry.com/repo/image:1.2.3": "denied: requested access to the resource is denied"`,
+        });
     });
 });

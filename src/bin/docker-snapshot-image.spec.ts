@@ -1,8 +1,8 @@
 const startMock = jest.fn();
 jest.mock('../lib', () => ({
     CliExectuor: {
-        start: startMock
-    }
+        start: startMock,
+    },
 }));
 
 describe('docker-snapshot-image', () => {
