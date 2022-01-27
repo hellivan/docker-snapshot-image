@@ -20,6 +20,12 @@ export function getRegistryCredentials(env: Record<string, string | undefined>):
     return { username, password };
 }
 
+export function resolveImageName(env: Record<string, string | undefined>, imageName: string): string {
+    const registryRepo = env['CONTAINER_IMAGE_REGISTRY_REPO'];
+    if (registryRepo == null) return imageName;
+    return `${registryRepo}${registryRepo.endsWith('/') ? '' : '/'}${imageName}`;
+}
+
 export class ImageUtils {
     public static async createImage({
         imageName,
@@ -33,6 +39,8 @@ export class ImageUtils {
         const packageInfo = await NpmUtils.getPackageInfo('./package.json');
 
         imageName = sanitizeImageName(imageName || packageInfo.name);
+
+        imageName = resolveImageName(process.env, imageName);
 
         let latestDockerImageTag: string | null = null;
         const dockerImageTags: string[] = [];
