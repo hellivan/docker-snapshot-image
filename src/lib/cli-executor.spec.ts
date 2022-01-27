@@ -11,6 +11,7 @@ jest.mock('./npm-utils', () => ({
     },
 }));
 import { join as joinPath } from 'path';
+
 import { CliExectuor } from './cli-executor';
 
 describe('CliExectuor', () => {

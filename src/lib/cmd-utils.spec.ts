@@ -5,8 +5,9 @@ jest.mock('child_process', () => ({
     spawn: spawnMock,
 }));
 
-import { execCmd, spawnCmd } from './cmd-utils';
 import { EventEmitter } from 'events';
+
+import { execCmd, spawnCmd } from './cmd-utils';
 
 class SpawnedCommandMock extends EventEmitter {
     public readonly stdout = new EventEmitter();
