@@ -52,3 +52,11 @@ However, for a fully detailed description of all flags that can be used, see the
 For branchname determination we are generally using the `git rev-parse --abbrev-ref HEAD` command. However, since some CI environments (e.g. Jenkins)
 are not actually checking out the actual branch but rather the pushed commit itself, we are optionally checking for environment varable `BRANCH_NAME`
 before starting branchname determination using `git rev-parse`.
+
+## Environment variables
+
+The application reads the following environment variables:
+
+-   `CONTAINER_IMAGE_REGISTRY_PASS`
+-   `CONTAINER_IMAGE_REGISTRY_USER`
+-   `CONTAINER_IMAGE_REGISTRY_REPO`

@@ -21,7 +21,7 @@ jest.mock('./npm-utils', () => ({
     },
 }));
 
-import { CreateImageOptions, getRegistryCredentials, ImageUtils } from './image-utils';
+import { CreateImageOptions, getRegistryCredentials, ImageUtils, resolveImageName } from './image-utils';
 
 describe('ImageUtils', () => {
     const defaultCreateImageOptions: CreateImageOptions = {
@@ -197,5 +197,21 @@ describe('getRegistryCredentials', () => {
             CONTAINER_IMAGE_REGISTRY_PASS: 'bar',
         });
         expect(result).toEqual({ username: 'foo', password: 'bar' });
+    });
+});
+
+describe('resolveImageName', () => {
+    test('should prepend registry repo if specified', () => {
+        const result = resolveImageName({ CONTAINER_IMAGE_REGISTRY_REPO: 'some.repo.com/foo' }, 'image:1.2.3');
+        expect(result).toEqual('some.repo.com/foo/image:1.2.3');
+    });
+
+    test('should not prepend registry repo if notspecified', () => {
+        const result = resolveImageName({}, 'image:1.2.3');
+        expect(result).toEqual('image:1.2.3');
+    });
+    test('should not add separation slash if repo already has one', () => {
+        const result = resolveImageName({ CONTAINER_IMAGE_REGISTRY_REPO: 'some.repo.com/foo/' }, 'image:1.2.3');
+        expect(result).toEqual('some.repo.com/foo/image:1.2.3');
     });
 });
