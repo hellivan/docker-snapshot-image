@@ -65,9 +65,12 @@ export async function pushImage(existingTag: string, credentials: BasicCredentia
         .post<string>(`http://localhost/v1.41/images/${existingTag}/push`, {}, { headers });
 
     for (const line of result.data.split('\n')) {
-        const parsed = JSON.parse(line);
-        if (parsed.errorDetail != null || parsed.error != null) {
-            throw new Error(`Error while pushing image "${existingTag}": "${parsed.error}"`);
+        // skip empty lines
+        if (line.trim().length > 0) {
+            const parsed = JSON.parse(line);
+            if (parsed.error != null) {
+                throw new Error(`Error while pushing image "${existingTag}": "${parsed.error}"`);
+            }
         }
     }
 

@@ -139,8 +139,11 @@ describe('pushImage', () => {
 
         dockerApiNock.post(`/images/${dockerImageWithTag}/push`).reply(
             200,
-            `{"status":"1.2.3: digest: sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6 size: 2200"}
-{"progressDetail":{},"aux":{"Tag":"1.2.3","Digest":"sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6","Size":2200}}`
+            `
+{"status":"1.2.3: digest: sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6 size: 2200"}
+
+{"progressDetail":{},"aux":{"Tag":"1.2.3","Digest":"sha256:17cdfd262dd5ed022949f33c54bdfc006d46799e2e2840022ef0798d58e374f6","Size":2200}}
+`
         );
 
         await pushImage(dockerImageWithTag, undefined);
