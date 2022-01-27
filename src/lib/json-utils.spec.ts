@@ -25,7 +25,7 @@ describe('json-utils', () => {
         try {
             await JsonUtils.readJsonFile('test-path');
         } catch (err) {
-            expect(err.message).toEqual(
+            expect((err as Error).message).toEqual(
                 `Error while parsing json-file 'test-path': "Unexpected token i in JSON at position 0"`
             );
         }

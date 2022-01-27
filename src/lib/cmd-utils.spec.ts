@@ -129,7 +129,7 @@ describe('spawnCmd', () => {
         try {
             await resultPromise;
         } catch (err) {
-            expect(err.message).toEqual(`Command 'test-bin param1 param2' exited with status code 1`);
+            expect((err as Error).message).toEqual(`Command 'test-bin param1 param2' exited with status code 1`);
         }
     });
 

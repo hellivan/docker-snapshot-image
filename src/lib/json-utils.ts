@@ -6,7 +6,7 @@ export class JsonUtils {
         try {
             return JSON.parse(fileContent);
         } catch (err) {
-            throw new Error(`Error while parsing json-file '${filePath}': "${err.message}"`);
+            throw new Error(`Error while parsing json-file '${filePath}': "${(err as Error).message}"`);
         }
     }
 }

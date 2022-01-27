@@ -44,7 +44,7 @@ describe('npm-utils', () => {
         try {
             await NpmUtils.getPackageInfo('./package.json');
         } catch (err) {
-            expect(err.message).toEqual(`Packageinfo file './package.json' not not found!`);
+            expect((err as Error).message).toEqual(`Packageinfo file './package.json' not not found!`);
         }
 
         expect(resolveSpy).toHaveBeenCalledWith('./package.json');
