@@ -18,7 +18,7 @@ export class ImageUtils {
         autoTag,
         testMode,
         silentDockerMode,
-        autoTagFormat
+        autoTagFormat,
     }: CreateImageOptions): Promise<string | null> {
         const packageInfo = await NpmUtils.getPackageInfo('./package.json');
 

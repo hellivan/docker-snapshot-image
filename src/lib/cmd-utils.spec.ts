@@ -2,11 +2,12 @@ const execMock = jest.fn();
 const spawnMock = jest.fn();
 jest.mock('child_process', () => ({
     exec: execMock,
-    spawn: spawnMock
+    spawn: spawnMock,
 }));
 
-import { execCmd, spawnCmd } from './cmd-utils';
 import { EventEmitter } from 'events';
+
+import { execCmd, spawnCmd } from './cmd-utils';
 
 class SpawnedCommandMock extends EventEmitter {
     public readonly stdout = new EventEmitter();
@@ -129,7 +130,7 @@ describe('spawnCmd', () => {
         try {
             await resultPromise;
         } catch (err) {
-            expect(err.message).toEqual(`Command 'test-bin param1 param2' exited with status code 1`);
+            expect((err as Error).message).toEqual(`Command 'test-bin param1 param2' exited with status code 1`);
         }
     });
 

@@ -1,4 +1,4 @@
-import * as program from 'commander';
+import { Command } from 'commander';
 import { join as joinPath } from 'path';
 
 import { CommanderUtils } from './commander-utils';
@@ -11,8 +11,11 @@ export class CliExectuor {
 
         const defaultAutoTagFormat = '{pkg-version}-{commit-hash}';
 
+        const program = new Command(pkgInfo.name);
+
+        program.version(pkgInfo.version);
+
         program
-            .version(pkgInfo.version)
             .option('--no-auto', 'Do not create the image with the automatic snapshot-tag specified in auto-tag-format')
             .option(
                 '--auto-tag-format <format>',
@@ -25,13 +28,15 @@ export class CliExectuor {
             .option('--silent-docker', 'Do not output stdout/stderr from executed docker commands')
             .parse(processArgv);
 
+        const programOptions = program.opts();
+
         const options: CreateImageOptions = {
-            imageName: CommanderUtils.parseStringValue(program.imageName),
-            fixedTag: CommanderUtils.parseStringValue(program.fixedTag),
-            autoTag: CommanderUtils.parseBooleanValue(program.auto, true),
-            testMode: CommanderUtils.parseBooleanValue(program.test, false),
-            silentDockerMode: CommanderUtils.parseBooleanValue(program.silentDocker, false),
-            autoTagFormat: CommanderUtils.parseStringValue(program.autoTagFormat, defaultAutoTagFormat)
+            imageName: CommanderUtils.parseStringValue(programOptions.imageName),
+            fixedTag: CommanderUtils.parseStringValue(programOptions.fixedTag),
+            autoTag: CommanderUtils.parseBooleanValue(programOptions.auto, true),
+            testMode: CommanderUtils.parseBooleanValue(programOptions.test, false),
+            silentDockerMode: CommanderUtils.parseBooleanValue(programOptions.silentDocker, false),
+            autoTagFormat: CommanderUtils.parseStringValue(programOptions.autoTagFormat, defaultAutoTagFormat),
         };
 
         await ImageUtils.createImage(options);

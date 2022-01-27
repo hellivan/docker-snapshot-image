@@ -2,15 +2,16 @@ const createImageMock = jest.fn();
 const getPackageInfoMock = jest.fn();
 jest.mock('./image-utils', () => ({
     ImageUtils: {
-        createImage: createImageMock
-    }
+        createImage: createImageMock,
+    },
 }));
 jest.mock('./npm-utils', () => ({
     NpmUtils: {
-        getPackageInfo: getPackageInfoMock
-    }
+        getPackageInfo: getPackageInfoMock,
+    },
 }));
 import { join as joinPath } from 'path';
+
 import { CliExectuor } from './cli-executor';
 
 describe('CliExectuor', () => {
@@ -29,7 +30,7 @@ describe('CliExectuor', () => {
             autoTag: true,
             testMode: false,
             silentDockerMode: false,
-            autoTagFormat: '{pkg-version}-{commit-hash}'
+            autoTagFormat: '{pkg-version}-{commit-hash}',
         });
 
         expect(getPackageInfoMock).toHaveBeenCalledWith(joinPath(__dirname, '..', '..', 'package.json'));

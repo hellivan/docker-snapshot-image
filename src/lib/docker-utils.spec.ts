@@ -1,6 +1,6 @@
 const spawnCmdMockFn = jest.fn();
 jest.mock('./cmd-utils', () => ({
-    spawnCmd: spawnCmdMockFn
+    spawnCmd: spawnCmdMockFn,
 }));
 import { createOrTag, sanitizeImageName, sanitizeTagName } from './docker-utils';
 

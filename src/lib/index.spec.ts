@@ -1,6 +1,6 @@
-import { CliExectuor as exportedCliExectuor, ImageUtils as exportedImageUtils } from './index';
 import { CliExectuor } from './cli-executor';
 import { ImageUtils } from './image-utils';
+import { CliExectuor as exportedCliExectuor, ImageUtils as exportedImageUtils } from './index';
 
 describe('index', () => {
     test('index must export CliExectuor', () => {

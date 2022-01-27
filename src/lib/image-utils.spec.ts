@@ -7,16 +7,16 @@ const getPackageInfoMock = jest.fn();
 jest.mock('./docker-utils', () => ({
     createOrTag: createOrTagMock,
     sanitizeImageName: sanitizeImageNameMock,
-    sanitizeTagName: sanitizeTagNameMock
+    sanitizeTagName: sanitizeTagNameMock,
 }));
 jest.mock('./git-utils', () => ({
     getBranchName: getBranchNameMock,
-    getCommitHash: getCommitHashMock
+    getCommitHash: getCommitHashMock,
 }));
 jest.mock('./npm-utils', () => ({
     NpmUtils: {
-        getPackageInfo: getPackageInfoMock
-    }
+        getPackageInfo: getPackageInfoMock,
+    },
 }));
 
 import { CreateImageOptions, ImageUtils } from './image-utils';
@@ -28,7 +28,7 @@ describe('ImageUtils', () => {
         autoTagFormat: '{pkg-version}-{commit-hash}',
         imageName: null,
         silentDockerMode: false,
-        testMode: false
+        testMode: false,
     };
 
     beforeEach(() => {
@@ -61,7 +61,7 @@ describe('ImageUtils', () => {
         await ImageUtils.createImage({
             ...defaultCreateImageOptions,
             autoTag: true,
-            testMode: true
+            testMode: true,
         });
 
         expect(sanitizeImageNameMock).toHaveBeenCalledWith(mockedName);
@@ -80,7 +80,7 @@ describe('ImageUtils', () => {
         await ImageUtils.createImage({
             ...defaultCreateImageOptions,
             fixedTag,
-            silentDockerMode: true
+            silentDockerMode: true,
         });
 
         expect(sanitizeImageNameMock).toHaveBeenCalledWith(mockedName);
@@ -105,7 +105,7 @@ describe('ImageUtils', () => {
             ...defaultCreateImageOptions,
             fixedTag,
             autoTag: true,
-            autoTagFormat: '{pkg-version}-{commit-hash}-{branch-name}'
+            autoTagFormat: '{pkg-version}-{commit-hash}-{branch-name}',
         });
 
         expect(sanitizeImageNameMock).toHaveBeenCalledWith(mockedName);

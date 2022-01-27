@@ -27,7 +27,7 @@ describe('CommanderUtils', () => {
             try {
                 CommanderUtils.parseStringValue(42);
             } catch (err) {
-                expect(err.message).toEqual(`Cannot parse '42' as string value!`);
+                expect((err as Error).message).toEqual(`Cannot parse '42' as string value!`);
             }
         });
     });
@@ -58,7 +58,7 @@ describe('CommanderUtils', () => {
             try {
                 CommanderUtils.parseBooleanValue(42);
             } catch (err) {
-                expect(err.message).toEqual(`Cannot parse '42' as boolean value!`);
+                expect((err as Error).message).toEqual(`Cannot parse '42' as boolean value!`);
             }
         });
     });

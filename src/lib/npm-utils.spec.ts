@@ -2,15 +2,15 @@ const existsSyncMockFn = jest.fn();
 const resolveMockFn = jest.fn();
 const readJsonFileMockFn = jest.fn();
 jest.mock('fs', () => ({
-    existsSync: existsSyncMockFn
+    existsSync: existsSyncMockFn,
 }));
 jest.mock('path', () => ({
-    resolve: resolveMockFn
+    resolve: resolveMockFn,
 }));
 jest.mock('./json-utils', () => ({
     JsonUtils: {
-        readJsonFile: readJsonFileMockFn
-    }
+        readJsonFile: readJsonFileMockFn,
+    },
 }));
 
 import { NpmUtils } from './npm-utils';
@@ -44,7 +44,7 @@ describe('npm-utils', () => {
         try {
             await NpmUtils.getPackageInfo('./package.json');
         } catch (err) {
-            expect(err.message).toEqual(`Packageinfo file './package.json' not not found!`);
+            expect((err as Error).message).toEqual(`Packageinfo file './package.json' not not found!`);
         }
 
         expect(resolveSpy).toHaveBeenCalledWith('./package.json');
