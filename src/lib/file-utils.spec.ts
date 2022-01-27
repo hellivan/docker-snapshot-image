@@ -1,6 +1,6 @@
 const readFileMockFn = jest.fn();
 jest.mock('fs', () => ({
-    readFile: readFileMockFn
+    readFile: readFileMockFn,
 }));
 import { FileUtils } from './file-utils';
 

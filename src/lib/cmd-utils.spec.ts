@@ -2,7 +2,7 @@ const execMock = jest.fn();
 const spawnMock = jest.fn();
 jest.mock('child_process', () => ({
     exec: execMock,
-    spawn: spawnMock
+    spawn: spawnMock,
 }));
 
 import { execCmd, spawnCmd } from './cmd-utils';

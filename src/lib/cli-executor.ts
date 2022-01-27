@@ -31,7 +31,7 @@ export class CliExectuor {
             autoTag: CommanderUtils.parseBooleanValue(program.auto, true),
             testMode: CommanderUtils.parseBooleanValue(program.test, false),
             silentDockerMode: CommanderUtils.parseBooleanValue(program.silentDocker, false),
-            autoTagFormat: CommanderUtils.parseStringValue(program.autoTagFormat, defaultAutoTagFormat)
+            autoTagFormat: CommanderUtils.parseStringValue(program.autoTagFormat, defaultAutoTagFormat),
         };
 
         await ImageUtils.createImage(options);
