@@ -26,6 +26,7 @@ export class CliExectuor {
             .option('--image-name <name>', 'Use the specified custom name for the image')
             .option('-t --test', 'Start application in test mode (only log docker commands on stdout)')
             .option('--silent-docker', 'Do not output stdout/stderr from executed docker commands')
+            .option('-p --push', 'Push the images to a remote registry')
             .parse(processArgv);
 
         const programOptions = program.opts();
@@ -37,6 +38,7 @@ export class CliExectuor {
             testMode: CommanderUtils.parseBooleanValue(programOptions.test, false),
             silentDockerMode: CommanderUtils.parseBooleanValue(programOptions.silentDocker, false),
             autoTagFormat: CommanderUtils.parseStringValue(programOptions.autoTagFormat, defaultAutoTagFormat),
+            push: CommanderUtils.parseBooleanValue(programOptions.push, false),
         };
 
         await ImageUtils.createImage(options);

@@ -1,11 +1,13 @@
 const sanitizeImageNameMock = jest.fn().mockImplementation(v => v);
 const sanitizeTagNameMock = jest.fn().mockImplementation(v => v);
 const createOrTagMock = jest.fn();
+const pushImageMock = jest.fn();
 const getBranchNameMock = jest.fn();
 const getCommitHashMock = jest.fn();
 const getPackageInfoMock = jest.fn();
 jest.mock('./docker-utils', () => ({
     createOrTag: createOrTagMock,
+    pushImage: pushImageMock,
     sanitizeImageName: sanitizeImageNameMock,
     sanitizeTagName: sanitizeTagNameMock,
 }));
@@ -19,7 +21,7 @@ jest.mock('./npm-utils', () => ({
     },
 }));
 
-import { CreateImageOptions, ImageUtils } from './image-utils';
+import { CreateImageOptions, getRegistryCredentials, ImageUtils } from './image-utils';
 
 describe('ImageUtils', () => {
     const defaultCreateImageOptions: CreateImageOptions = {
@@ -29,12 +31,14 @@ describe('ImageUtils', () => {
         imageName: null,
         silentDockerMode: false,
         testMode: false,
+        push: false,
     };
 
     beforeEach(() => {
         sanitizeImageNameMock.mockClear();
         sanitizeTagNameMock.mockClear();
         createOrTagMock.mockRestore();
+        pushImageMock.mockRestore();
         getBranchNameMock.mockRestore();
         getCommitHashMock.mockRestore();
         getPackageInfoMock.mockRestore();
@@ -121,5 +125,77 @@ describe('ImageUtils', () => {
             false,
             false
         );
+    });
+
+    test('createImage should push if push is true', async () => {
+        const mockedName = 'test-pkg-name';
+        const fixedTag = 'fixed-test-tag';
+        getPackageInfoMock.mockImplementationOnce(() => Promise.resolve({ name: mockedName }));
+
+        createOrTagMock.mockImplementationOnce(() => Promise.resolve(fixedTag));
+
+        await ImageUtils.createImage({
+            ...defaultCreateImageOptions,
+            fixedTag,
+            silentDockerMode: true,
+            push: true,
+        });
+
+        expect(sanitizeImageNameMock).toHaveBeenCalledWith(mockedName);
+
+        expect(createOrTagMock).toHaveBeenCalledWith(null, `${mockedName}:${fixedTag}`, false, true);
+
+        expect(pushImageMock).toHaveBeenCalledWith(`${mockedName}:${fixedTag}`, undefined);
+    });
+
+    test('createImage should not push if testMode is true', async () => {
+        const mockedName = 'test-pkg-name';
+        const fixedTag = 'fixed-test-tag';
+        getPackageInfoMock.mockImplementationOnce(() => Promise.resolve({ name: mockedName }));
+
+        createOrTagMock.mockImplementationOnce(() => Promise.resolve(fixedTag));
+
+        await ImageUtils.createImage({
+            ...defaultCreateImageOptions,
+            fixedTag,
+            silentDockerMode: true,
+            push: true,
+            testMode: true,
+        });
+
+        expect(sanitizeImageNameMock).toHaveBeenCalledWith(mockedName);
+
+        expect(createOrTagMock).toHaveBeenCalledWith(null, `${mockedName}:${fixedTag}`, true, true);
+
+        expect(pushImageMock).toHaveBeenCalledTimes(0);
+    });
+});
+
+describe('getRegistryCredentials', () => {
+    test('should return undefined if no ENV variable is provided', () => {
+        const result = getRegistryCredentials({});
+        expect(result).toBe(undefined);
+    });
+
+    test('should return undefined if password is not provided in ENV variable', () => {
+        const result = getRegistryCredentials({
+            CONTAINER_IMAGE_REGISTRY_USER: 'foo',
+        });
+        expect(result).toBe(undefined);
+    });
+
+    test('should return undefined if username is not provided in ENV variable', () => {
+        const result = getRegistryCredentials({
+            CONTAINER_IMAGE_REGISTRY_PASS: 'bar',
+        });
+        expect(result).toBe(undefined);
+    });
+
+    test('should return undefined if username is not provided in ENV variable', () => {
+        const result = getRegistryCredentials({
+            CONTAINER_IMAGE_REGISTRY_USER: 'foo',
+            CONTAINER_IMAGE_REGISTRY_PASS: 'bar',
+        });
+        expect(result).toEqual({ username: 'foo', password: 'bar' });
     });
 });
