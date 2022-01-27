@@ -31,6 +31,7 @@ describe('CliExectuor', () => {
             testMode: false,
             silentDockerMode: false,
             autoTagFormat: '{pkg-version}-{commit-hash}',
+            push: false,
         });
 
         expect(getPackageInfoMock).toHaveBeenCalledWith(joinPath(__dirname, '..', '..', 'package.json'));
