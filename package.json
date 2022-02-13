@@ -25,7 +25,7 @@
         "cleanup-lockfile": "yarn-deduplicate --strategy fewer"
     },
     "dependencies": {
-        "axios": "^0.25.0",
+        "axios": "^0.26.0",
         "commander": "^8.3.0"
     },
     "bin": {
