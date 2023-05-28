@@ -45,7 +45,7 @@
         "dependency-check": "^4.1.0",
         "eslint": "^8.7.0",
         "eslint-plugin-prettier": "^4.0.0",
-        "eslint-plugin-simple-import-sort": "^7.0.0",
+        "eslint-plugin-simple-import-sort": "^10.0.0",
         "jest": "^27.4.7",
         "jest-circus": "^27.4.6",
         "jest-html-reporter": "^3.4.2",
